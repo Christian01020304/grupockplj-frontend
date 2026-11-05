@@ -9,13 +9,12 @@ export default function CadastroPage(){
     const [idade, setIdade] = useState("")
     const [genero, setGenero] = useState("")
     const [profissao, setProfissao] = useState("")
-    const [cadastroStatus, setCadastroStatus] = useState<"idle" | "saving" | "success" | "error">("idle")
+    const [cadastroStatus, setCadastroStatus] = useState("")
 
     async function cadastrar(e:React.FormEvent){
         e.preventDefault()
-
+        setCadastroStatus("")
         const membros: Membros = {nome, idade: Number(idade), genero, profissão: profissao}
-        setCadastroStatus("saving")
         try {
             const membroCadastrado = await membrosService.cadastrar(membros)
             console.log("Membro cadastrado:", membroCadastrado)
@@ -23,10 +22,10 @@ export default function CadastroPage(){
             setIdade("")
             setGenero("")
             setProfissao("")
-            setCadastroStatus("success")
+            setCadastroStatus("successo ao cadastrar cliente")
         } catch (error) {
             console.error("Erro ao cadastrar membro:", error)
-            setCadastroStatus("error")
+            setCadastroStatus("Erro ao cadastrar")
         }
     }
 
@@ -67,8 +66,9 @@ export default function CadastroPage(){
             className="border border-gray-300 p-2 w-full rounded"
             />
                 <button type="submit" disabled={cadastroStatus === "saving"} className="bg-purple-500 text-white px-4 rounded w-full">
-                    {cadastroStatus === "saving" ? "Salvando..." : cadastroStatus === "success" ? "Membro cadastrado!" : cadastroStatus === "error" ? "Erro ao cadastrar. Tentar novamente" : "Salvar"}
+                    {cadastroStatus === "saving" ? "Salvando..." : cadastroStatus === "successo ao cadastrar cliente" ? "Membro cadastrado!" : cadastroStatus === "Erro ao cadastrar" ? "Erro ao cadastrar. Tentar novamente" : "Salvar"}
                 </button>
+                 <p className="text-sm text-center text-red-600">{cadastroStatus}</p>
             </form>  
         </main>
     )
